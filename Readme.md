@@ -1,6 +1,6 @@
-# Node Hotel Application
+# Node Restraunt Application
 
-The **Node Hotel** application is a Node.js-based system developed using the Express.js framework, with MongoDB as the chosen database. This application manages information related to persons (staff) and menu items. It exposes specific endpoints to handle CRUD (Create, Read, Update, Delete) operations for both persons and menu items.
+The **Node Restraunt** application is a Node.js-based system developed using the Express.js framework, with MongoDB as the chosen database. This application manages information related to persons (staff) and menu items. It exposes specific endpoints to handle CRUD (Create, Read, Update, Delete) operations for both persons and menu items.
 
 ## Endpoints
 
@@ -49,12 +49,12 @@ The **Node Hotel** application is a Node.js-based system developed using the Exp
 ## Data Models
 
 ### Person
-The `Person` data model represents information about staff members in the hotel.
+The `Person` data model represents information about staff members in the restraunt.
 
 - **Fields:**
   - `name`: String (Person's name)
   - `age`: Number (Person's age)
-  - `work`: Enum (Role in the hotel, such as chef, waiter, manager)
+  - `work`: Enum (Role in the restraunt, such as chef, waiter, manager)
   - `mobile`: String (Person's mobile number)
   - `email`: String (Person's email address, unique)
   - `address`: String (Person's address)
@@ -74,7 +74,7 @@ The `Person` data model represents information about staff members in the hotel.
 
 
 ### Menu Item
-The `MenuItem` data model represents information about menu items available in the hotel.
+The `MenuItem` data model represents information about menu items available in the restraunt.
 
 - **Fields:**
   - `name`: String (Item's name)
