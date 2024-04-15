@@ -3,19 +3,26 @@ const router=express.Router()
 const Person=require('./../models/person')
 const {jwtAuthMiddleware,generateToken}=require('./../jwt')
 
+//POST route to add a person
 router.post('/signup',async(req,res)=>{
     try{
-        const data=req.body
+        const data=req.body //data in body
+
+        //creating a new person
         const newPerson=new Person(data)
+
+        //saving the data
         const response=await newPerson.save()
         console.log("Data saved");
+
         const payload={
             id:response.id,
             username:response.username
         }
         console.log(JSON.stringify(payload));
-        const token=generateToken(response.username)
+        const token=generateToken(payload)
         console.log("Token is:",token);
+
         res.status(200).json({response:response,token:token})
     }catch(e){
         console.log(e);
@@ -35,7 +42,7 @@ router.post('/login',async(req,res)=>{
         const user=await Person.findOne({username:username})
 
         //if user does not exist or pass is wrong return err
-        if(!user || await user.comparePassword(password)){
+        if(!user || !(await user.comparePassword(password))){
             return res.status(401).json({
                 error:"Invalid username or password"
             })
@@ -62,10 +69,11 @@ router.post('/login',async(req,res)=>{
 router.get('/profile',jwtAuthMiddleware,async(req,res)=>{
     try{
         const userData=req.user
-        console.log("User data",userData);
+        console.log("User data: ",userData);
 
         const userId=userData.id
         const user=await Person.findById(userId)
+        
         res.status(200).json({user})
     }catch(e){
         console.log(e);
