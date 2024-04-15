@@ -1,5 +1,7 @@
 const mongoose=require('mongoose')
 const bcrypt =require('bcrypt')
+
+//Defining the schema
 const personSchema=new mongoose.Schema({
     name:{
         type:String,

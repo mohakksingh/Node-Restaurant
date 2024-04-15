@@ -2,6 +2,7 @@ const express=require('express')
 const router=express.Router()
 const MenuItem=require('./../models/menuItem')
 
+//Post method to add a Menu Item
 router.post('/',async(req,res)=>{
     try{
         const data=req.body
@@ -16,6 +17,8 @@ router.post('/',async(req,res)=>{
         })
     }
 })
+
+//get menu items
 router.get('/',async(req,res)=>{
     try{
         const data=await MenuItem.find()
@@ -30,14 +33,14 @@ router.get('/',async(req,res)=>{
 
 router.get('/:taste',async(req,res)=>{
     try{
-        const taste=req.params.taste
-        const data=await MenuItem.find({taste})
+        const tasteType=req.params.taste //extracting the taste type from the URL Parameter
         if(taste=='sweet'||taste=='sour'||taste=='spicy'||taste=='bitter'||taste=='salty'){
+            const response=await MenuItem.find({taste:tasteType})
             console.log("Data fetched");
-            res.status(200).json(taste)
+            res.status(200).json(response)
         }else{
             res.status(404).json({
-                message:"Invalid keyword"
+                message:"Invalid taste type"
             })
         }
     }catch(e){
@@ -48,4 +51,50 @@ router.get('/:taste',async(req,res)=>{
     }
 })
 
+router.put('/:id',async(req,res)=>{
+    try{
+        const menuId=req.params.id
+        const updatedMenuData=req.body
+
+        const response=await MenuItem.findByIdAndUpdate(menuId,updatedMenuData,{
+            new:true,
+            runValidators:true
+        })
+
+        if(!response){
+            return res.status(404).json({
+                error:"Menu item not found"
+            })
+        }
+        console.log("Data updated");
+        res.status(200).json(response)
+
+    }catch(e){
+        console.log(e);
+        
+    }
+})
+
+router.delete('/:id',async(req,res)=>{
+    try{
+        const menuId=req.params.id
+
+        const response=await MenuItem.findByIdAndDelete(menuId)
+        if(!response){
+            return res.status(404).json({
+                error:"Menu item not found"
+            })
+        }
+
+        console.log("data deleted");
+        res.status(200).json({
+            message:"Menu successfully deleted"
+        })
+    }catch(e){
+        console.log(e);
+        res.status(500).json({
+            message:"Internal Server Error"
+        })
+    }
+})
 module.exports=router
